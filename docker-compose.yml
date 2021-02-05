@@ -11,6 +11,8 @@ services:
             - '81:80'
         depends_on:
             - php
+        networks:
+            - app
 
     php:
         container_name: todo_php
@@ -20,3 +22,28 @@ services:
         volumes:
             - ./app:/var/www
         command: /var/www/entrypoint.sh
+        networks:
+            - app
+
+    database:
+        container_name: todo_mariadb
+        image: mariadb:latest
+        env_file:
+            - .env
+        networks:
+            - app
+        ports:
+            - '3307:3306'
+
+    phpmyadmin:
+        container_name: todo_phpmyadmin
+        image: phpmyadmin/phpmyadmin
+        networks:
+            - app
+        ports:
+            - '8888:80'
+        links:
+            - 'database:db'
+
+networks:
+    app:
