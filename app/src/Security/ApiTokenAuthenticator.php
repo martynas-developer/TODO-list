@@ -3,7 +3,7 @@
 namespace App\Security;
 
 use App\Repository\ApiTokenRepository;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Traits\ApiResponser;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -11,9 +11,12 @@ use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationExc
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
+use Symfony\Component\HttpFoundation\Response;
 
 class ApiTokenAuthenticator extends AbstractGuardAuthenticator
 {
+    use ApiResponser;
+
     private $apiTokenRepo;
 
     public function __construct(ApiTokenRepository $apiTokenRepo)
@@ -62,9 +65,7 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        return new JsonResponse([
-            'message' => $exception->getMessageKey()
-        ], 401);
+        return $this->errorMessage($exception->getMessageKey(), Response::HTTP_UNAUTHORIZED);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
@@ -74,7 +75,7 @@ class ApiTokenAuthenticator extends AbstractGuardAuthenticator
 
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        // todo
+        return $this->errorMessage('Authentication Required', Response::HTTP_UNAUTHORIZED);
     }
 
     public function supportsRememberMe()

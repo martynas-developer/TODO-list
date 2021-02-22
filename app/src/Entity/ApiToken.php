@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use App\Repository\ApiTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
-use JetBrains\PhpStorm\ArrayShape;
 
 /**
  * @ORM\Entity(repositoryClass=ApiTokenRepository::class)
@@ -67,7 +66,7 @@ class ApiToken implements \JsonSerializable
         return $this->getExpiresAt() <= new \DateTime();
     }
 
-    #[ArrayShape(['token' => "null|string", 'expiresAt' => "string"])] public function jsonSerialize(): array
+    public function jsonSerialize(): array
     {
         return [
             'token' => $this->getToken(),

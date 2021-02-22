@@ -13,6 +13,11 @@ Trait ApiResponser
         return new JsonResponse($data, $code);
     }
 
+    public function errorMessage($message, $code = Response::HTTP_BAD_REQUEST): JsonResponse
+    {
+        return new JsonResponse(['error' => $message], $code);
+    }
+
     public function formErrorResponse(FormInterface $form): JsonResponse
     {
         $errors = $this->getFormErrorsArray($form);

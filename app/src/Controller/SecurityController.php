@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Form\UserLoginForm;
 use App\Form\UserRegisterForm;
-use App\Entity\User;
 use App\Service\SecurityService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -28,9 +27,10 @@ class SecurityController extends AbstractController
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, SecurityService $securityService): JsonResponse
     {
-        $form = $this->createForm(UserRegisterForm::class, new User());
+        $form = $this->createForm(UserRegisterForm::class);
         $data = json_decode($request->getContent(), true);
         $form->submit($data);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
             $password = $form->get('password')->getData();
