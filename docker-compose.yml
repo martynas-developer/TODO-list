@@ -8,15 +8,47 @@ services:
             - ./app/public/:/var/www
             - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
         ports:
-            - '81:80'
+            - '80:80'
         depends_on:
             - php
+        networks:
+            - app
 
     php:
         container_name: todo_php
+        env_file:
+            - .env
         build:
             context: .
             dockerfile: docker/php/Dockerfile
         volumes:
             - ./app:/var/www
         command: /var/www/entrypoint.sh
+        #user: 1000:1000
+        networks:
+            - app
+
+    database:
+        container_name: todo_mariadb
+        image: mariadb:latest
+        volumes:
+            - ./docker/database/data/app:/var/lib/mysql
+        env_file:
+            - .env
+        networks:
+            - app
+        ports:
+            - '3306:3306'
+
+    phpmyadmin:
+        container_name: todo_phpmyadmin
+        image: phpmyadmin/phpmyadmin
+        networks:
+            - app
+        ports:
+            - '8888:80'
+        links:
+            - 'database:db'
+
+networks:
+    app:
