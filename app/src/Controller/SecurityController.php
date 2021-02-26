@@ -72,7 +72,7 @@ class SecurityController extends AbstractController
             }
 
             $apiToken = $securityService->createApiToken($user);
-            return $this->successResponse($apiToken, Response::HTTP_CREATED);
+            return $this->successResponse($apiToken, Response::HTTP_OK);
         }
         return $this->formErrorResponse($form);
     }
