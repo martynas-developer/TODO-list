@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=TaskRepository::class)
  */
-class Task
+class Task implements \JsonSerializable
 {
     /**
      * @ORM\Id
@@ -21,7 +21,7 @@ class Task
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="tasks")
      * @ORM\JoinColumn(nullable=false)
      */
-    private User $User;
+    private User $user;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -34,9 +34,14 @@ class Task
     private \DateTime $createdAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
-    private \DateTime $completedAt;
+    private ?\DateTime $completedAt = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -45,12 +50,12 @@ class Task
 
     public function getUser(): ?User
     {
-        return $this->User;
+        return $this->user;
     }
 
-    public function setUser(User $User): self
+    public function setUser(?User $user): self
     {
-        $this->User = $User;
+        $this->user = $user;
 
         return $this;
     }
@@ -72,22 +77,24 @@ class Task
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     public function getCompletedAt(): ?\DateTimeInterface
     {
         return $this->completedAt;
     }
 
-    public function setCompletedAt(\DateTimeInterface $completedAt): self
+    public function setCompletedAt(?\DateTimeInterface $completedAt): self
     {
         $this->completedAt = $completedAt;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'id' => $this->getId(),
+            'description' => $this->getDescription(),
+            'completedAt' => $this->getCompletedAt() ? $this->getCompletedAt()->format('Y-m-d') : null
+        ];
     }
 }
