@@ -24,7 +24,6 @@ services:
         volumes:
             - ./app:/var/www
         command: /var/www/entrypoint.sh
-        #user: 1000:1000
         networks:
             - app
 

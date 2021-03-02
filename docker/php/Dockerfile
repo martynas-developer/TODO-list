@@ -5,21 +5,9 @@ RUN apt-get update && \
     libzip-dev
 
 RUN docker-php-ext-install zip \
-    && docker-php-ext-install pdo_mysql
+    && docker-php-ext-install pdo_mysql \
+    && usermod -u 1000 www-data
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-WORKDIR /usr/src/cache
-
-COPY app/composer.json app/composer.lock ./
-
-RUN composer install
-
 WORKDIR /var/www
-
-#@TODO fix permissions
-#COPY --chown=1000:1000 app /var/www
-#RUN PATH=$PATH:/var/www/vendor/bin:bin
-
-#RUN chown -R www-data:www-data /var/www
-#USER www-data
