@@ -14,10 +14,13 @@ class SecurityControllerTest extends WebTestCase
 
     protected function setUp(): void
     {
-        parent::setUp();
         $this->client = static::createClient();
+        parent::setUp();
     }
 
+    /**
+     * @group integration
+     */
     public function testRegisterFail(): void
     {
         $this->client->request(
@@ -34,6 +37,9 @@ class SecurityControllerTest extends WebTestCase
         self::assertArrayHasKey('password', $responseBodyAsArray);
     }
 
+    /**
+     * @group integration
+     */
     public function testRegisterSuccess(): void
     {
         $this->client->request(
@@ -47,6 +53,9 @@ class SecurityControllerTest extends WebTestCase
         self::assertEquals(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode());
     }
 
+    /**
+     * @group integration
+     */
     public function testLogin(): void
     {
         $this->client->request(
@@ -66,6 +75,9 @@ class SecurityControllerTest extends WebTestCase
         self::assertNotFalse(strtotime($responseBodyAsArray['expiresAt']));
     }
 
+    /**
+     * @group integration
+     */
     public function testLoginFail(): void
     {
         $this->client->request(

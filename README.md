@@ -29,5 +29,4 @@ This README would normally document whatever steps are necessary to get your app
 * Other community or team contact
 
 tests:
-inside docker container
-/var/www/vendor/phpunit/phpunit/phpunit
+docker-compose exec php-service ./vendor/bin/phpunit --group integration

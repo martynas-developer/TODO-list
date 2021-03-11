@@ -15,6 +15,12 @@
         <env name="BOOTSTRAP_RESET_DATABASE" value="1" />
     </php>
 
+    <groups>
+        <exclude>
+            <group>integration</group>
+        </exclude>
+    </groups>
+
     <testsuites>
         <testsuite name="Project Test Suite">
             <directory>tests</directory>
