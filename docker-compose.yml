@@ -1,21 +1,20 @@
-version:  '3.3'
+version:  '3'
 services:
-    nginx:
-        container_name: todo_nginx
-        image: nginx:1.19.0-alpine
-        build: docker/nginx
+    nginx-service:
+        container_name: nginx-container
+        image: nginx:stable-alpine
         volumes:
-            - ./app/public/:/var/www
+            - ./app:/var/www
             - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
         ports:
-            - '80:80'
+            - '8080:80'
         depends_on:
-            - php
+            - php-service
         networks:
-            - app
+            - nginx-php-mariadb-phpmyadmin
 
-    php:
-        container_name: todo_php
+    php-service:
+        container_name: php-container
         env_file:
             - .env
         build:
@@ -24,30 +23,32 @@ services:
         volumes:
             - ./app:/var/www
         command: /var/www/entrypoint.sh
+        ports:
+            - '9000:9000'
         networks:
-            - app
+            - nginx-php-mariadb-phpmyadmin
 
-    database:
-        container_name: todo_mariadb
+    mariadb-service:
+        container_name: mariadb-container
         image: mariadb:latest
         volumes:
             - ./docker/database/data/app:/var/lib/mysql
         env_file:
             - .env
         networks:
-            - app
+            - nginx-php-mariadb-phpmyadmin
         ports:
             - '3306:3306'
 
-    phpmyadmin:
-        container_name: todo_phpmyadmin
+    phpmyadmin-service:
+        container_name: phpmyadmin-container
         image: phpmyadmin/phpmyadmin
         networks:
-            - app
+            - nginx-php-mariadb-phpmyadmin
         ports:
             - '8888:80'
         links:
-            - 'database:db'
+            - 'mariadb-service:db'
 
 networks:
-    app:
+    nginx-php-mariadb-phpmyadmin:
