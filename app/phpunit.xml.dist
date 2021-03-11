@@ -11,8 +11,15 @@
         <ini name="error_reporting" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
         <server name="SHELL_VERBOSITY" value="-1" />
+        <env name="APP_ENV" value="test" force="true" />
         <env name="BOOTSTRAP_RESET_DATABASE" value="1" />
     </php>
+
+    <groups>
+        <exclude>
+            <group>integration</group>
+        </exclude>
+    </groups>
 
     <testsuites>
         <testsuite name="Project Test Suite">

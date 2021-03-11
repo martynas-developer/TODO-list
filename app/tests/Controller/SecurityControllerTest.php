@@ -2,73 +2,72 @@
 
 namespace Tests\Controller;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\RequestOptions;
-use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
 
-class SecurityControllerTest extends TestCase
+class SecurityControllerTest extends WebTestCase
 {
     private string $email = 'test@test.com';
     private string $password = 'testtest';
 
-    private Client $client;
+    private $client;
 
     protected function setUp(): void
     {
+        $this->client = static::createClient();
         parent::setUp();
-        $this->client = new Client();
     }
 
+    /**
+     * @group integration
+     */
     public function testRegisterFail(): void
     {
-        $response = $this->client->request('POST', 'nginx/register', [
-            'http_errors' => false,
-            RequestOptions::BODY => json_encode([
-                "email" => '',
-                "password" => [
-                    "password" => '',
-                    "confirm" => ''
-                ]
-            ]),
-        ]);
-        self::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $responseBodyAsArray = json_decode($response->getBody(), true);
+        $this->client->request(
+            'POST', 
+            $_ENV['ENV_URL'] . '/register',
+            [],
+            [],
+            [],
+            json_encode(['email' => '', 'password' => ['password' => '', 'confirm' => '']])
+        );
+        self::assertEquals(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());
+        $responseBodyAsArray = json_decode($this->client->getResponse()->getContent(), true);
         self::assertArrayHasKey('email', $responseBodyAsArray);
         self::assertArrayHasKey('password', $responseBodyAsArray);
     }
 
+    /**
+     * @group integration
+     */
     public function testRegisterSuccess(): void
     {
-        $response = $this->client->request('POST', 'nginx/register', [
-            RequestOptions::BODY => json_encode([
-                "email" => $this->email,
-                "password" => [
-                    "password" => $this->password,
-                    "confirm" => $this->password
-                ]
-            ]),
-        ]);
-        self::assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->client->request(
+            'POST',
+            $_ENV['ENV_URL'] . '/register',
+            [],
+            [],
+            [],
+            json_encode(['email' => $this->email, 'password' => ['password' => $this->password, 'confirm' => $this->password]]),
+        );
+        self::assertEquals(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode());
     }
 
-
-
+    /**
+     * @group integration
+     */
     public function testLogin(): void
     {
-        $client = new Client();
-        $response = $client->request(
+        $this->client->request(
             'POST',
-            'nginx/login',
-            [
-                RequestOptions::BODY => json_encode([
-                    "email" => $this->email,
-                    "password" => $this->password
-                ]),
-            ]
+            $_ENV['ENV_URL'] . '/login',
+            [],
+            [],
+            [],
+            json_encode(['email' => $this->email, 'password' => $this->password]),
         );
-        self::assertEquals(Response::HTTP_OK, $response->getStatusCode());
-        $responseBodyAsArray = json_decode($response->getBody(), true);
+        self::assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $responseBodyAsArray = json_decode($this->client->getResponse()->getContent(), true);
 
         self::assertArrayHasKey('token', $responseBodyAsArray);
         self::assertNotEmpty($responseBodyAsArray['token']);
@@ -76,27 +75,21 @@ class SecurityControllerTest extends TestCase
         self::assertNotFalse(strtotime($responseBodyAsArray['expiresAt']));
     }
 
+    /**
+     * @group integration
+     */
     public function testLoginFail(): void
     {
-        $client = new Client();
-        $response = $client->request(
+        $this->client->request(
             'POST',
-            'nginx/login',
-            [
-                'http_errors' => false,
-//                RequestOptions::HEADERS => [
-//                    'Accept' => 'application/ld+json',
-//                    'Content-Type' => 'application/json',
-//                    'Authorization' => "Bearer {$this->token}",
-//                ],
-                RequestOptions::BODY => json_encode([
-                    "email" => $this->email,
-                    "password" => ''
-                ]),
-            ]
+            $_ENV['ENV_URL'] . '/login',
+            [],
+            [],
+            [],
+            json_encode(['email' => '', 'password' => '']),
         );
-        self::assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
-        $responseBodyAsArray = json_decode($response->getBody(), true);
+        self::assertEquals(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());
+        $responseBodyAsArray = json_decode($this->client->getResponse()->getContent(), true);
         self::assertArrayHasKey('password', $responseBodyAsArray);
     }
 }
