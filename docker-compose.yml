@@ -60,5 +60,7 @@ services:
         networks:
             - nginx-php-mariadb-phpmyadmin-node
 
+        command: ["yarn", "watch"]
+
 networks:
     nginx-php-mariadb-phpmyadmin-node:
