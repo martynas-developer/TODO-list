@@ -14,6 +14,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Traits\ApiResponser;
 
+/**
+ * @Route("/api")
+ */
 class SecurityController extends AbstractController
 {
     use ApiResponser;

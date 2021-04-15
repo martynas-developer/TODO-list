@@ -1,0 +1,5 @@
+CONSOLE_PATH = /var/www/bin/console --env=dev
+
+0 * * * * /usr/local/bin/php $CONSOLE_PATH delete_expired_api_tokens >> /var/log/cron.log 2>&1
+
+# An empty line is required at the end of this file for a valid cron file.

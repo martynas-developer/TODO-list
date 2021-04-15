@@ -2,4 +2,7 @@
 
 php /usr/bin/composer install
 
-php-fpm
+# print env variables for cron
+printenv | grep -v "no_proxy" >> /etc/environment
+
+cron -f & php-fpm
