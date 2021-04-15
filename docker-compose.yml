@@ -59,7 +59,8 @@ services:
         tty: true
         networks:
             - nginx-php-mariadb-phpmyadmin-node
-
+        environment:
+            - BACKEND_SERVER="here we need to enter backend server"
         command: ["yarn", "watch"]
 
 networks:

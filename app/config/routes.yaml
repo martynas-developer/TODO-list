@@ -1,3 +1,6 @@
-index:
-    path: /
-    controller: App\Controller\DefaultController::index
+# catch all routes and let front-end handle 404's
+anything:
+    path: /{anything}
+    controller: App\Controller\DefaultController::catchAllAction
+    requirements:
+        anything: ".*"

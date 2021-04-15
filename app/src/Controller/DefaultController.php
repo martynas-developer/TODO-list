@@ -15,4 +15,9 @@ class DefaultController extends AbstractController
     {
         return $this->render('base.html.twig');
     }
+
+    public function catchAllAction(): Response
+    {
+        return $this->indexAction();
+    }
 }
