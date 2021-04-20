@@ -5,12 +5,12 @@ const TodoList = ({ todos }) => {
     return (
         <>
             {todos.map((todo) => (
-                <div key={todo.id}>
-                    <Link to={`/todos/${todo.id}`}>
-                        <p>{todo.title}</p>
-                        <p>{todo.description}</p>
-                    </Link>
-                </div>
+                <Link to={`/todos/${todo.id}`}
+                      className={"col-md-3 alert rounded m-3 " + (todo.completedAt ? 'alert-success' : 'alert-warning')}
+                      key={todo.id}>
+                    <p>{todo.title}</p>
+                    <p>{todo.description}</p>
+                </Link>
             ))}
         </>
     );

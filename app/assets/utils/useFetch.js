@@ -1,7 +1,7 @@
 import {useCallback, useEffect, useState} from 'react';
 import {useHistory} from "react-router-dom";
 
-const useFetch = (url, options, {immediate} = {immediate: true}) => {
+const useFetch = (url, options, {immediate, useToken} = {immediate: true, useToken: true}) => {
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -14,9 +14,7 @@ const useFetch = (url, options, {immediate} = {immediate: true}) => {
     const executeFetch = useCallback(async () => {
         await fetch(url, {
             signal: abortController.signal,
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            },
+            ...(useToken && { headers: { Authorization: `Bearer ${localStorage.getItem('token')}`}}),
             ...options
         }).then(async res => {
             if (res.ok) {
