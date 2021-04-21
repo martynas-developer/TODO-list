@@ -14,7 +14,7 @@ class ExceptionListener
         $this->env = $env;
     }
 
-    public function onKernelException(ExceptionEvent $event)
+    public function onKernelException(ExceptionEvent $event): void
     {
         if ($this->env === 'dev') {
             $response = new JsonResponse([

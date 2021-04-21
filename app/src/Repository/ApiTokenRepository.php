@@ -12,4 +12,14 @@ class ApiTokenRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, ApiToken::class);
     }
+
+    public function getExpiredTokens(): array
+    {
+        return $this->createQueryBuilder('api_token')
+            ->where('api_token.expiresAt <= :now')
+            ->setParameter('now', new \DateTime())
+            ->getQuery()
+            ->getResult();
+    }
+
 }

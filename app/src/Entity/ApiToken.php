@@ -38,7 +38,7 @@ class ApiToken implements \JsonSerializable
         // remove setters to make class immutable
         $this->token = bin2hex(random_bytes(20));
         $this->user = $user;
-        $this->expiresAt = new \DateTime('+7 day');
+        $this->expiresAt = new \DateTime('+100 day');
     }
 
     public function getId(): ?int
