@@ -24,7 +24,7 @@ services:
             - '9000:9000'
         volumes:
             - ./app:/var/www
-        command: /var/www/entrypoint.sh
+        command: /var/www/entrypoint_php.sh
         networks:
             - nginx-php-mariadb-phpmyadmin-node
 
@@ -57,11 +57,9 @@ services:
             - ./app:/var/www
         working_dir: /var/www
         tty: true
+        command: /var/www/entrypoint_node.sh
         networks:
             - nginx-php-mariadb-phpmyadmin-node
-        environment:
-            - BACKEND_SERVER="here we need to enter backend server"
-        command: ["yarn", "watch"]
 
 networks:
     nginx-php-mariadb-phpmyadmin-node:
