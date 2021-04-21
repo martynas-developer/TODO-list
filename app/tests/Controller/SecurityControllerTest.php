@@ -25,7 +25,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $this->client->request(
             'POST', 
-            $_ENV['ENV_URL'] . '/register',
+            $_ENV['ENV_URL'] . '/api/register',
             [],
             [],
             [],
@@ -44,7 +44,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $this->client->request(
             'POST',
-            $_ENV['ENV_URL'] . '/register',
+            $_ENV['ENV_URL'] . '/api/register',
             [],
             [],
             [],
@@ -60,7 +60,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $this->client->request(
             'POST',
-            $_ENV['ENV_URL'] . '/login',
+            $_ENV['ENV_URL'] . '/api/login',
             [],
             [],
             [],
@@ -82,7 +82,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $this->client->request(
             'POST',
-            $_ENV['ENV_URL'] . '/login',
+            $_ENV['ENV_URL'] . '/api/login',
             [],
             [],
             [],

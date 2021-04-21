@@ -1,32 +1,13 @@
 # README #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+A todo web app with symfony backend and react frontend running on docker
 
-### What is this repository for? ###
+To setup:
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+* `git clone https://github.com/martynas-developer/TODO-list todo`
+* create .env from .env.template (`cp .env.template .env`)
+* run `docker-compose up --build`
 
-### How do I get set up? ###
+To run tests:
+* `docker-compose exec php-service ./vendor/bin/phpunit --group integration`
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
-
-tests:
-docker-compose exec php-service ./vendor/bin/phpunit --group integration

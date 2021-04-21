@@ -20,7 +20,7 @@ class TaskControllerTest extends WebTestCase
         $this->client = static::createClient();
         $this->client->request(
             'POST',
-            $_ENV['ENV_URL'] . '/login',
+            $_ENV['ENV_URL'] . '/api/login',
             [],
             [],
             [],
@@ -42,7 +42,7 @@ class TaskControllerTest extends WebTestCase
     {
         $this->client->request(
             'POST',
-            $_ENV['ENV_URL'] . '/tasks',
+            $_ENV['ENV_URL'] . '/api/tasks',
             [],
             [],
             $this->headers,
@@ -60,7 +60,7 @@ class TaskControllerTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            $_ENV['ENV_URL'] . '/tasks/1',
+            $_ENV['ENV_URL'] . '/api/tasks/1',
             [],
             [],
             $this->headers,
