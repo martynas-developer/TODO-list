@@ -7,6 +7,7 @@ To setup:
 * `git clone https://github.com/martynas-developer/TODO-list todo`
 * create .env from .env.template (`cp .env.template .env`)
 * run `docker-compose up --build`
+* go to `http://localhost:8080` and enjoy :)
 
 To run tests:
 * `docker-compose exec php-service ./vendor/bin/phpunit --group integration`

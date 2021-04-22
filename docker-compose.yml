@@ -2,7 +2,7 @@ version:  '3'
 services:
     nginx-service:
         image: nginx:stable-alpine
-        container_name: nginx-container
+        #container_name: nginx-container
         ports:
             - '8080:80'
         volumes:
@@ -14,7 +14,7 @@ services:
             - nginx-php-mariadb-phpmyadmin-node
 
     php-service:
-        container_name: php-container
+        #container_name: php-container
         env_file:
             - .env
         build:
@@ -30,7 +30,7 @@ services:
 
     mariadb-service:
         image: mariadb:latest
-        container_name: mariadb-container
+        #container_name: mariadb-container
         ports:
             - '3306:3306'
         volumes:
@@ -42,7 +42,7 @@ services:
 
     phpmyadmin-service:
         image: phpmyadmin/phpmyadmin
-        container_name: phpmyadmin-container
+        #container_name: phpmyadmin-container
         ports:
             - '8888:80'
         links:
@@ -52,7 +52,6 @@ services:
 
     node-service:
         image: node:latest
-        container_name: node-container
         volumes:
             - ./app:/var/www
         working_dir: /var/www
